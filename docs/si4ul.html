@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>si4ul package &mdash; si4ul 0.1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> si4ul
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">si4ul package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-si4ul.changepoint_si">si4ul.changepoint_si module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-si4ul.kmeans_si">si4ul.kmeans_si module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-si4ul.si.kmeans_si">si4ul.si.kmeans_si module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-si4ul.segmentation_si">si4ul.segmentation_si module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-si4ul.si.segmentation_si">si4ul.si.segmentation_si module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">si4ul</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>si4ul package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/si4ul.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="si4ul-package">
+<h1>si4ul package<a class="headerlink" href="#si4ul-package" title="Permalink to this headline"></a></h1>
+<section id="module-si4ul.changepoint_si">
+<span id="si4ul-changepoint-si-module"></span><h2>si4ul.changepoint_si module<a class="headerlink" href="#module-si4ul.changepoint_si" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="si4ul.changepoint_si.optseg_si">
+<span class="sig-prename descclassname"><span class="pre">si4ul.changepoint_si.</span></span><span class="sig-name descname"><span class="pre">optseg_si</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#si4ul.changepoint_si.optseg_si" title="Permalink to this definition"></a></dt>
+<dd><p>computing valid p-values for optimal changepoint by Selective Inference using Dynamic Programming.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>array-like of shape</em><em> (</em><em>point-num</em><em>)</em>) – time series data.</p></li>
+<li><p><strong>sigma</strong> (<em>float</em>) – standard deviation in distribution of time series data.</p></li>
+<li><p><strong>beta</strong> (<em>float</em>) – regularization factor.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>changepoint list and p-values of each changepoint.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(array-like of shape (changepoint-num), array-like of shape (changepoint-num))</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span><span class="p">,</span> <span class="n">p_list</span> <span class="o">=</span> <span class="n">changepoint_si</span><span class="o">.</span><span class="n">optseg_si</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">seg</span><span class="p">)</span>
+<span class="go">[25, 40, 59, 80, 100, 125, 140, 159, 180]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">p_list</span><span class="p">)</span>
+<span class="go">[6.439051311970013e-06, 5.451462826100586e-07, 3.589542368255502e-07, 7.74132481356728e-05, 0.11719543493338598, 6.4387982662212394e-06, 1.1776732917248327e-06, 3.589542368255725e-07, 1.8180641069769048e-09]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="si4ul.changepoint_si.optseg_si_oc">
+<span class="sig-prename descclassname"><span class="pre">si4ul.changepoint_si.</span></span><span class="sig-name descname"><span class="pre">optseg_si_oc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#si4ul.changepoint_si.optseg_si_oc" title="Permalink to this definition"></a></dt>
+<dd><p>computing valid p-values for optimal changepoint by over-comditioning Selective Inference.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>array-like of shape</em><em> (</em><em>point-num</em><em>)</em>) – time series data.</p></li>
+<li><p><strong>sigma</strong> (<em>float</em>) – standard deviation in distribution of time series data.</p></li>
+<li><p><strong>beta</strong> (<em>float</em>) – regularization factor.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>changepoint list and p-values of each changepoint.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(array-like of shape (changepoint-num), array-like of shape (changepoint-num))</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span><span class="p">,</span> <span class="n">p_list</span> <span class="o">=</span> <span class="n">changepoint_si</span><span class="o">.</span><span class="n">optseg_si</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">seg</span><span class="p">)</span>
+<span class="go">[25, 40, 59, 75, 80, 100, 125, 140, 159, 175, 180]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">p_list</span><span class="p">)</span>
+<span class="go">[0.013528694810211626, 0.05567852225768205, 0.329173206633249, 0.36014111520463954, 0.4101971284236369, 0.6981932657047393, 0.16996861755494708, 0.3719537702838958, 0.3592986205789473, 0.36014111520464676, 0.1196678816881915]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="si4ul.changepoint_si.plot_changepoint_detection">
+<span class="sig-prename descclassname"><span class="pre">si4ul.changepoint_si.</span></span><span class="sig-name descname"><span class="pre">plot_changepoint_detection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sg_results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_value_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">underlying</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segment_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'OptSeg-SI'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#si4ul.changepoint_si.plot_changepoint_detection" title="Permalink to this definition"></a></dt>
+<dd><p>the result of optimal changepoint after SI.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>array-like of shape</em><em> (</em><em>point-num</em><em>)</em>) – time series data.</p></li>
+<li><p><strong>sg_results</strong> (<em>array-like of shape</em><em> (</em><em>changepoint-num</em><em>)</em>) – changepoint list.</p></li>
+<li><p><strong>p_value_list</strong> (<em>array-like of shape</em><em> (</em><em>changepoint-num</em><em>)</em>) – p-values of each changepoint.</p></li>
+<li><p><strong>alpha</strong> (<em>float</em>) – significance level.</p></li>
+<li><p><strong>underlying</strong> (<em>array-like of shape</em><em> (</em><em>true changepoint-num</em><em>)</em>) – mean values of true segment.</p></li>
+<li><p><strong>segment_size</strong> (<em>float</em>) – true segment size.</p></li>
+<li><p><strong>title</strong> (<em>string</em>) – plot title.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-si4ul.kmeans_si">
+<span id="si4ul-kmeans-si-module"></span><h2>si4ul.kmeans_si module<a class="headerlink" href="#module-si4ul.kmeans_si" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="si4ul.kmeans_si.all_clusters_combination_test">
+<span class="sig-prename descclassname"><span class="pre">si4ul.kmeans_si.</span></span><span class="sig-name descname"><span class="pre">all_clusters_combination_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obs_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_gene</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#si4ul.kmeans_si.all_clusters_combination_test" title="Permalink to this definition"></a></dt>
+<dd><p>post clustering inference for all cluster combinations.
+If test_gene is set, test is PCI_gene.
+otherwise, test is PCI_cluster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obs_model</strong> (<a class="reference internal" href="#si4ul.si.kmeans_si.KMeans" title="si4ul.si.kmeans_si.KMeans"><em>KMeans</em></a>) – reffer to document of KMeans.</p></li>
+<li><p><strong>test_gene</strong> (<em>int</em>) – feature to compare.</p></li>
+<li><p><strong>sigma</strong> (<em>float</em>) – standard deviation in distribution.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>matrix of test statistics, matrix of homotopy PCI p-value and matrix of naive p-value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(array-like of shape(3, cluster_num, cluster_num))</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">kmeans_si</span><span class="o">.</span><span class="n">all_clusters_combination_test</span><span class="p">(</span><span class="n">obs_model</span><span class="p">))</span>
+<span class="go">pci_cluster</span>
+<span class="go">(array([[nan, 5.24520442, 4.53785448], [nan, nan, 5.38552569], [nan, nan, nan]]),</span>
+<span class="go">array([[nan, 0.01863257, 0.00028306], [nan, nan, 0.00359755], [nan, nan, nan]]),</span>
+<span class="go">array([[nan, 1.06122705e-06, 3.37658148e-05], [nan, nan, 5.03368420e-07], [nan, nan, nan]]))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="si4ul.kmeans_si.kmeans">
+<span class="sig-prename descclassname"><span class="pre">si4ul.kmeans_si.</span></span><span class="sig-name descname"><span class="pre">kmeans</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_clusters</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#si4ul.kmeans_si.kmeans" title="Permalink to this definition"></a></dt>
+<dd><p>k-means clustering algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>array-like of shape</em><em> (</em><em>n</em><em>, </em><em>d</em><em>)</em>) – data matrix.</p></li>
+<li><p><strong>n_clusters</strong> (<em>int</em>) – number of cluster.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>reffer to document of KMeans.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#si4ul.si.kmeans_si.KMeans" title="si4ul.si.kmeans_si.KMeans">KMeans</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">kmeans_si</span><span class="o">.</span><span class="n">kmeans</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">K</span><span class="p">))</span>
+<span class="go">&lt;si4ul.si.kmeans_si.KMeans at 0x102aef700&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="si4ul.kmeans_si.pci_cluster">
+<span class="sig-prename descclassname"><span class="pre">si4ul.kmeans_si.</span></span><span class="sig-name descname"><span class="pre">pci_cluster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obs_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comparison_clusters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#si4ul.kmeans_si.pci_cluster" title="Permalink to this definition"></a></dt>
+<dd><p>post clustering inference for test between clusters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obs_model</strong> (<a class="reference internal" href="#si4ul.si.kmeans_si.KMeans" title="si4ul.si.kmeans_si.KMeans"><em>KMeans</em></a>) – reffer to document of KMeans.</p></li>
+<li><p><strong>comparison_clusters</strong> (<em>array-like of shape</em><em>(</em><em>2</em><em>)</em>) – set of clusters to compare.</p></li>
+<li><p><strong>sigma</strong> (<em>float</em>) – standard deviation in distribution.</p></li>
+<li><p><strong>max_iter</strong> (<em>int</em>) – upper limit count of iteration in k-means algorithm.</p></li>
+<li><p><strong>random_seed</strong> (<em>int</em>) – seed of random for determine initial cluster.</p></li>
+<li><p><strong>z_max</strong> (<em>float</em>) – upper limit of parameter z on test statisitcs vector.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>test statistics, homotopy PCI p-value and naive p-value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(float, float, float)</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">kmeans_si</span><span class="o">.</span><span class="n">pci_cluster</span><span class="p">(</span><span class="n">obs_model</span><span class="p">,</span> <span class="n">comparison_clusters</span><span class="p">))</span>
+<span class="go">(5.245204424402314, 0.018632573868904267, 1.0612270479959528e-06)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="si4ul.kmeans_si.pci_gene">
+<span class="sig-prename descclassname"><span class="pre">si4ul.kmeans_si.</span></span><span class="sig-name descname"><span class="pre">pci_gene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obs_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comparison_clusters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_gene</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#si4ul.kmeans_si.pci_gene" title="Permalink to this definition"></a></dt>
+<dd><p>post clustering inference for test between clusters about a feature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obs_model</strong> (<a class="reference internal" href="#si4ul.si.kmeans_si.KMeans" title="si4ul.si.kmeans_si.KMeans"><em>KMeans</em></a>) – reffer to document of KMeans.</p></li>
+<li><p><strong>comparison_clusters</strong> (<em>array-like of shape</em><em>(</em><em>2</em><em>)</em>) – set of clusters to compare.</p></li>
+<li><p><strong>sigma</strong> (<em>float</em>) – standard deviation in distribution.</p></li>
+<li><p><strong>test_gene</strong> (<em>int</em>) – feature to compare.</p></li>
+<li><p><strong>max_iter</strong> (<em>int</em>) – upper limit count of iteration in k-means algorithm.</p></li>
+<li><p><strong>random_seed</strong> (<em>int</em>) – seed of random for determine initial cluster.</p></li>
+<li><p><strong>z_max</strong> (<em>float</em>) – upper limit of parameter z on test statisitcs vector.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>test statistics, homotopy PCI p-value and naive p-value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(float, float, float)</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">kmeans_si</span><span class="o">.</span><span class="n">pci_gene</span><span class="p">(</span><span class="n">obs_model</span><span class="p">,</span> <span class="n">comparison_clusters</span><span class="p">,</span> <span class="n">gene_id</span><span class="p">))</span>
+<span class="go">(0.26352301450242993, 0.4212956294190716, 0.20005529456703786)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="si4ul.kmeans_si.plot_histogram">
+<span class="sig-prename descclassname"><span class="pre">si4ul.kmeans_si.</span></span><span class="sig-name descname"><span class="pre">plot_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obs_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comparison_clusters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_gene</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_plot_norm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#si4ul.kmeans_si.plot_histogram" title="Permalink to this definition"></a></dt>
+<dd><p>plot histogram of distribution per cluster using test.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obs_model</strong> (<a class="reference internal" href="#si4ul.si.kmeans_si.KMeans" title="si4ul.si.kmeans_si.KMeans"><em>KMeans</em></a>) – reffer to document of KMeans.</p></li>
+<li><p><strong>comparison_clusters</strong> (<em>array-like of shape</em><em>(</em><em>2</em><em>)</em>) – set of clusters to compare.</p></li>
+<li><p><strong>test_gene</strong> (<em>int</em>) – feature to plot.</p></li>
+<li><p><strong>is_plot_norm</strong> (<em>bool</em>) – whether plot normal distribution in background.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="si4ul.kmeans_si.plot_p_matrix">
+<span class="sig-prename descclassname"><span class="pre">si4ul.kmeans_si.</span></span><span class="sig-name descname"><span class="pre">plot_p_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">digit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#si4ul.kmeans_si.plot_p_matrix" title="Permalink to this definition"></a></dt>
+<dd><p>plot matrix of p-value that is calculated by each cluster combinations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>matrix</strong> (<em>array-like of shape</em><em>(</em><em>cluster_num</em><em>, </em><em>cluster_num</em><em>)</em>) – matrix of p-value.</p></li>
+<li><p><strong>digit</strong> (<em>int</em>) – digit number to display.</p></li>
+<li><p><strong>alpha</strong> (<em>float</em>) – significant level.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="si4ul.kmeans_si.plot_scatter">
+<span class="sig-prename descclassname"><span class="pre">si4ul.kmeans_si.</span></span><span class="sig-name descname"><span class="pre">plot_scatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obs_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comparison_clusters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_dims</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#si4ul.kmeans_si.plot_scatter" title="Permalink to this definition"></a></dt>
+<dd><p>plot scatter data in inputted 2-dims per cluster using test.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obs_model</strong> (<a class="reference internal" href="#si4ul.si.kmeans_si.KMeans" title="si4ul.si.kmeans_si.KMeans"><em>KMeans</em></a>) – reffer to document of KMeans.</p></li>
+<li><p><strong>comparison_clusters</strong> (<em>array-like of shape</em><em>(</em><em>2</em><em>)</em>) – set of clusters to compare.</p></li>
+<li><p><strong>show_dims</strong> (<em>array-like of shape</em><em>(</em><em>2</em><em>)</em>) – set of dims to show.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="si4ul.kmeans_si.plot_statistics_matrix">
+<span class="sig-prename descclassname"><span class="pre">si4ul.kmeans_si.</span></span><span class="sig-name descname"><span class="pre">plot_statistics_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">digit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#si4ul.kmeans_si.plot_statistics_matrix" title="Permalink to this definition"></a></dt>
+<dd><p>plot matrix of statistics that is calculated by each cluster combinations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>matrix</strong> (<em>array-like of shape</em><em>(</em><em>cluster_num</em><em>, </em><em>cluster_num</em><em>)</em>) – matrix of test statistics.</p></li>
+<li><p><strong>digit</strong> (<em>int</em>) – digit number to display.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="si4ul.kmeans_si.plot_violin">
+<span class="sig-prename descclassname"><span class="pre">si4ul.kmeans_si.</span></span><span class="sig-name descname"><span class="pre">plot_violin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obs_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_gene</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#si4ul.kmeans_si.plot_violin" title="Permalink to this definition"></a></dt>
+<dd><p>plot violin per cluster using test and other.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obs_model</strong> (<a class="reference internal" href="#si4ul.si.kmeans_si.KMeans" title="si4ul.si.kmeans_si.KMeans"><em>KMeans</em></a>) – reffer to document of KMeans.</p></li>
+<li><p><strong>test_gene</strong> (<em>int</em>) – feature to plot.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<section id="module-si4ul.si.kmeans_si">
+<span id="si4ul-si-kmeans-si-module"></span><h3>si4ul.si.kmeans_si module<a class="headerlink" href="#module-si4ul.si.kmeans_si" title="Permalink to this headline"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="si4ul.si.kmeans_si.KMeans">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">si4ul.si.kmeans_si.</span></span><span class="sig-name descname"><span class="pre">KMeans</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_clusters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#si4ul.si.kmeans_si.KMeans" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>this class returns the results of k-means clustering.
+we can get from kmeans_si.kmeans().
+other kmeans_si APIs need this object to input.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="si4ul.si.kmeans_si.KMeans.cluster_centers_">
+<span class="sig-name descname"><span class="pre">cluster_centers_</span></span><a class="headerlink" href="#si4ul.si.kmeans_si.KMeans.cluster_centers_" title="Permalink to this definition"></a></dt>
+<dd><p>cluster center matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array-like of shape(n_clusters, d)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="si4ul.si.kmeans_si.KMeans.count">
+<span class="sig-name descname"><span class="pre">count</span></span><a class="headerlink" href="#si4ul.si.kmeans_si.KMeans.count" title="Permalink to this definition"></a></dt>
+<dd><p>count of iteration in k-means algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="si4ul.si.kmeans_si.KMeans.labels_">
+<span class="sig-name descname"><span class="pre">labels_</span></span><a class="headerlink" href="#si4ul.si.kmeans_si.KMeans.labels_" title="Permalink to this definition"></a></dt>
+<dd><p>label vector that each data join.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array-like of shape(n)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="si4ul.si.kmeans_si.KMeans.label_num_list">
+<span class="sig-name descname"><span class="pre">label_num_list</span></span><a class="headerlink" href="#si4ul.si.kmeans_si.KMeans.label_num_list" title="Permalink to this definition"></a></dt>
+<dd><p>list of the number of data contained in the cluster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array-like of shape(n_clusters)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="si4ul.si.kmeans_si.KMeans.max_iter">
+<span class="sig-name descname"><span class="pre">max_iter</span></span><a class="headerlink" href="#si4ul.si.kmeans_si.KMeans.max_iter" title="Permalink to this definition"></a></dt>
+<dd><p>upper limit count of iteration in k-means algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="si4ul.si.kmeans_si.KMeans.n_clusters">
+<span class="sig-name descname"><span class="pre">n_clusters</span></span><a class="headerlink" href="#si4ul.si.kmeans_si.KMeans.n_clusters" title="Permalink to this definition"></a></dt>
+<dd><p>number of cluster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="si4ul.si.kmeans_si.KMeans.random_seed">
+<span class="sig-name descname"><span class="pre">random_seed</span></span><a class="headerlink" href="#si4ul.si.kmeans_si.KMeans.random_seed" title="Permalink to this definition"></a></dt>
+<dd><p>seed of random for determine initial cluster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="si4ul.si.kmeans_si.KMeans.X">
+<span class="sig-name descname"><span class="pre">X</span></span><a class="headerlink" href="#si4ul.si.kmeans_si.KMeans.X" title="Permalink to this definition"></a></dt>
+<dd><p>data matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array-like of shape(n, d)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">kMeans</span><span class="o">.</span><span class="n">X</span>
+<span class="go">array([[ 1.32473015,  0.12584954], [ 0.17229311,  2.01200624], [ 1.47662313, -1.28557418], [ 0.1302503 , -0.43927367], [-1.41546232,  0.13654847], [-1.05260842,  1.20597647], [-0.14717876, -0.15950429], [-0.61262757,  0.05772617], [ 0.92854842, -0.49440228], [-0.80456805, -1.15935248]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kMeans</span><span class="o">.</span><span class="n">n_clusters</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kMeans</span><span class="o">.</span><span class="n">cluster_centers_</span>
+<span class="go">array([[ 1.47662313, -1.28557418], [ 0.55908753, -0.24183267], [-0.74259465,  0.45058097]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kMeans</span><span class="o">.</span><span class="n">labels_</span>
+<span class="go">array([1, 2, 0, 1, 2, 2, 1, 2, 1, 2])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kMeans</span><span class="o">.</span><span class="n">label_num_list</span>
+<span class="go">[1, 4, 5]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kMeans</span><span class="o">.</span><span class="n">count</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+<section id="module-si4ul.segmentation_si">
+<span id="si4ul-segmentation-si-module"></span><h2>si4ul.segmentation_si module<a class="headerlink" href="#module-si4ul.segmentation_si" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="si4ul.segmentation_si.plot_histogram">
+<span class="sig-prename descclassname"><span class="pre">si4ul.segmentation_si.</span></span><span class="sig-name descname"><span class="pre">plot_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_white</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#si4ul.segmentation_si.plot_histogram" title="Permalink to this definition"></a></dt>
+<dd><p>plot histogram of pixel values in input image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>local_white</strong> (<a class="reference internal" href="#si4ul.si.segmentation_si.LocalWhite" title="si4ul.si.segmentation_si.LocalWhite"><em>LocalWhite</em></a>) – segmetation object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="si4ul.segmentation_si.plot_histogram_region">
+<span class="sig-prename descclassname"><span class="pre">si4ul.segmentation_si.</span></span><span class="sig-name descname"><span class="pre">plot_histogram_region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_white</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display_statistics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#si4ul.segmentation_si.plot_histogram_region" title="Permalink to this definition"></a></dt>
+<dd><p>plot histogram of pixel values per region.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>local_white</strong> (<a class="reference internal" href="#si4ul.si.segmentation_si.LocalWhite" title="si4ul.si.segmentation_si.LocalWhite"><em>LocalWhite</em></a>) – segmetation object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="si4ul.segmentation_si.psegi_thresholding">
+<span class="sig-prename descclassname"><span class="pre">si4ul.segmentation_si.</span></span><span class="sig-name descname"><span class="pre">psegi_thresholding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_white</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#si4ul.segmentation_si.psegi_thresholding" title="Permalink to this definition"></a></dt>
+<dd><p>post segmentation inference for local white segmentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>local_white</strong> (<a class="reference internal" href="#si4ul.si.segmentation_si.LocalWhite" title="si4ul.si.segmentation_si.LocalWhite"><em>LocalWhite</em></a>) – segmetation object.</p></li>
+<li><p><strong>sigma</strong> (<em>float</em>) – standard deviation in distribution of input image.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>test statisitics, PSegI p-value, naive p-value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(float, float, float)</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">segmentation_si</span><span class="o">.</span><span class="n">psegi_thresholding</span><span class="p">(</span><span class="n">local_white</span><span class="p">))</span>
+<span class="go">(31.08397312484288, 0.08085241645874175, 0.0)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="si4ul.segmentation_si.thresholding">
+<span class="sig-prename descclassname"><span class="pre">si4ul.segmentation_si.</span></span><span class="sig-name descname"><span class="pre">thresholding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_dir_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_blur</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ksize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(11,</span> <span class="pre">11)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_output_regions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#si4ul.segmentation_si.thresholding" title="Permalink to this definition"></a></dt>
+<dd><p>local white segmentation algorithm.
+If bias is bigger than 1, algorithm can detect black object.
+If bias is smaller than 1, algorithm can detect white object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_path</strong> (<em>string</em>) – image path to segmentation.</p></li>
+<li><p><strong>result_dir_path</strong> (<em>string</em>) – directory to store the segmentation results.</p></li>
+<li><p><strong>window_size</strong> (<em>int</em>) – length of the side of the square in the nearest pixel range.</p></li>
+<li><p><strong>bias</strong> (<em>float</em>) – bias used in threshold determination. If it’s bigger than 1, algorithm can detect black object. If it’s smaller than 1, algorithm can detect white object.</p></li>
+<li><p><strong>isBlur</strong> (<em>bool</em>) – whether to use Gaussian smoothing for image preprocessing.</p></li>
+<li><p><strong>ksize</strong> (<em>Tuple</em><em>(</em><em>int</em><em>, </em><em>int</em><em>)</em>) – the side of the convolution window for Gaussian smoothing.</p></li>
+<li><p><strong>sigma_x</strong> (<em>float</em>) – standard deviation of x-coordinate for Gaussian smoothing.</p></li>
+<li><p><strong>sigma_y</strong> (<em>float</em>) – standard deviation of y-coordinate for Gaussian smoothing.</p></li>
+<li><p><strong>is_output_regions</strong> (<em>bool</em>) – wheter to make images of each regions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>reffer to document of LocalWhite.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#si4ul.si.segmentation_si.LocalWhite" title="si4ul.si.segmentation_si.LocalWhite">LocalWhite</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">segmentation_si</span><span class="o">.</span><span class="n">thresholding</span><span class="p">(</span><span class="s1">&#39;./image.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;./result/image_18&#39;</span><span class="p">))</span>
+<span class="go">&lt;si4ul.si.segmentation_si.LocalWhite at 0x10e33efa0&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<section id="module-si4ul.si.segmentation_si">
+<span id="si4ul-si-segmentation-si-module"></span><h3>si4ul.si.segmentation_si module<a class="headerlink" href="#module-si4ul.si.segmentation_si" title="Permalink to this headline"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="si4ul.si.segmentation_si.LocalWhite">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">si4ul.si.segmentation_si.</span></span><span class="sig-name descname"><span class="pre">LocalWhite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_dir_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_blur</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ksize</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#si4ul.si.segmentation_si.LocalWhite" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>this class returns the results of local white segmentation.
+we can get from segmentation_si.thresholding().
+other segmentation_si APIs need this object to input.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="si4ul.si.segmentation_si.LocalWhite.bias">
+<span class="sig-name descname"><span class="pre">bias</span></span><a class="headerlink" href="#si4ul.si.segmentation_si.LocalWhite.bias" title="Permalink to this definition"></a></dt>
+<dd><p>bias used in threshold determination. If it’s bigger than 1, algorithm can detect black object. If it’s smaller than 1, algorithm can detect white object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="si4ul.si.segmentation_si.LocalWhite.image">
+<span class="sig-name descname"><span class="pre">image</span></span><a class="headerlink" href="#si4ul.si.segmentation_si.LocalWhite.image" title="Permalink to this definition"></a></dt>
+<dd><p>input image of segmentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array-like of shape (image_height, image_width)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="si4ul.si.segmentation_si.LocalWhite.image_gaussian">
+<span class="sig-name descname"><span class="pre">image_gaussian</span></span><a class="headerlink" href="#si4ul.si.segmentation_si.LocalWhite.image_gaussian" title="Permalink to this definition"></a></dt>
+<dd><p>image after Gaussian smoothing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array-like of shape (image_height, image_width)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="si4ul.si.segmentation_si.LocalWhite.image_height">
+<span class="sig-name descname"><span class="pre">image_height</span></span><a class="headerlink" href="#si4ul.si.segmentation_si.LocalWhite.image_height" title="Permalink to this definition"></a></dt>
+<dd><p>height of image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="si4ul.si.segmentation_si.LocalWhite.image_original">
+<span class="sig-name descname"><span class="pre">image_original</span></span><a class="headerlink" href="#si4ul.si.segmentation_si.LocalWhite.image_original" title="Permalink to this definition"></a></dt>
+<dd><p>image matrix read in from the input image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array-like of shape (image_height, image_width)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="si4ul.si.segmentation_si.LocalWhite.image_path">
+<span class="sig-name descname"><span class="pre">image_path</span></span><a class="headerlink" href="#si4ul.si.segmentation_si.LocalWhite.image_path" title="Permalink to this definition"></a></dt>
+<dd><p>image path to segmentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="si4ul.si.segmentation_si.LocalWhite.image_width">
+<span class="sig-name descname"><span class="pre">image_width</span></span><a class="headerlink" href="#si4ul.si.segmentation_si.LocalWhite.image_width" title="Permalink to this definition"></a></dt>
+<dd><p>width of image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="si4ul.si.segmentation_si.LocalWhite.result_dir_path">
+<span class="sig-name descname"><span class="pre">result_dir_path</span></span><a class="headerlink" href="#si4ul.si.segmentation_si.LocalWhite.result_dir_path" title="Permalink to this definition"></a></dt>
+<dd><p>directory to store the segmentation results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="si4ul.si.segmentation_si.LocalWhite.window_size">
+<span class="sig-name descname"><span class="pre">window_size</span></span><a class="headerlink" href="#si4ul.si.segmentation_si.LocalWhite.window_size" title="Permalink to this definition"></a></dt>
+<dd><p>length of the side of the square in the nearest pixel range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">localWhite</span><span class="o">.</span><span class="n">image</span>
+<span class="go">array([[147, 147, 147, ..., 155, 157, 157],</span>
+<span class="go">    [147, 147, 148, ..., 154, 156, 156],</span>
+<span class="go">    [148, 148, 148, ..., 153, 154, 154],</span>
+<span class="go">    ...,</span>
+<span class="go">    [159, 158, 157, ..., 152, 151, 150],</span>
+<span class="go">    [159, 159, 157, ..., 152, 150, 150],</span>
+<span class="go">    [159, 159, 157, ..., 152, 150, 149]], dtype=uint8)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">localWhite</span><span class="o">.</span><span class="n">image_height</span><span class="p">,</span> <span class="n">localWhite</span><span class="o">.</span><span class="n">image_width</span>
+<span class="go">(88, 73)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, omori.y.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
