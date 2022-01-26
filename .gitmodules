@@ -1,0 +1,3 @@
+[submodule "src/si4ul/si/sicore"]
+	path = src/si4ul/si/sicore
+	url = git@nitgitlab:si/sicore.git
