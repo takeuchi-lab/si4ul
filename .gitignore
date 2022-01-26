@@ -116,3 +116,4 @@ dmypy.json
 
 # original
 notebook/segmentation/image
+src/docs/_build

@@ -12,7 +12,7 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../src/si4ul/'))
+sys.path.insert(0, os.path.abspath('../si4ul/'))
 
 
 # -- Project information -----------------------------------------------------
