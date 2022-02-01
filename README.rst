@@ -41,4 +41,4 @@ Required packages will be also installed automatically.
 =============
 API Reference
 =============
-`Detailed API reference is available here <https://takeuchi-lab.github.io/si4ul/>`_
+`Detailed API reference is available here <https://github.com/takeuchi-lab/si4ul/blob/main/document.pdf>`_
