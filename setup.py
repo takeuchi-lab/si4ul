@@ -15,7 +15,7 @@ setup(
     package_dir={"": "src"},
     packages=find_packages("src"),
     version="0.1.5",
-    url="https://github.com/takeuchi-lab/si4ul"
+    url="https://github.com/takeuchi-lab/si4ul",
     author="Takeuchi Lab",
     author_email="omori.y.mllabl.nit@gmail.com",
     description="selective inference for unsupervised learning",
