@@ -1,6 +1,6 @@
 import numpy as np
 
-from si4ul.si.sicore.sicore import SelectivePCINormSE, NaivePCIChiSquared, NaivePCINorm, SelectivePCIChiSquaredSE
+from si4ul.si.sicore.sicore import SelectiveInferenceNormSE, SelectivePCINormSE, NaivePCIChiSquared, NaivePCINorm, SelectivePCIChiSquaredSE
 
 
 # KMeans algorithm
@@ -175,16 +175,23 @@ def make_interval_cluster(X, cluster_num, labels, labels_prev, label_num, cluste
 
 
 # make interval gene
-def make_interval_gene(X, cluster_num, labels, labels_prev, label_num, cluster, eta, e_onehot, tau_sign, SI_original):
-    vec_x = X.T.flatten()
-    i_matrix_m = np.eye(X.shape[0])
-    i_matrix_n = np.eye(X.shape[1])
+def make_interval_gene(X, cluster_num, labels, labels_prev, label_num, SI_original, cluster=None, eta=None, e_onehot=None, tau_sign=None):
+    if eta is None:
+        I_d = np.eye(X.shape[1])
+    else:
+        vec_x = X.T.flatten()
+        i_matrix_m = np.eye(X.shape[0])
+        i_matrix_n = np.eye(X.shape[1])
 
-    eta_sigma = np.dot(eta.T, i_matrix_m)
-    sigma_eta = np.dot(i_matrix_m, eta)
+        eta_sigma = np.dot(eta.T, i_matrix_m)
+        sigma_eta = np.dot(i_matrix_m, eta)
 
     # データがどのクラスに属するかを表現する行列
-    one_c = np.zeros((cluster_num, X.shape[0]))
+    if eta is None:
+        one_c = np.zeros((cluster_num, X.shape[0], 1))
+    else:
+        one_c = np.zeros((cluster_num, X.shape[0]))
+
     for i in range(one_c.shape[1]):
         if labels_prev[i] != -1:
             one_c[labels_prev[i], i] = 1
@@ -194,41 +201,57 @@ def make_interval_gene(X, cluster_num, labels, labels_prev, label_num, cluster, 
         one_x = np.zeros((X.shape[0], 1))
         one_x[i, 0] = 1
 
-        a_list = []
-        for j in range(cluster_num):
-            # 自分のクラスでなければ作成
-            if labels[i] != j:
-                k = np.dot(one_x.T, X) - cluster[labels[i], :]
-                h = np.dot(one_x.T, X) - cluster[j, :]
-                lamda = np.dot(k, k.T) - np.dot(h, h.T)
+        if eta is None:
+            k = labels[i]
+            for h in range(cluster_num):
+                # 自分のクラスでなければ作成
+                if k != h:
+                    one_ck_one_ck_T = np.dot(one_c[k], one_c[k].T)
+                    one_ch_one_ch_T = np.dot(one_c[h], one_c[h].T)
+                    one_ck_one_x_T = np.dot(one_c[k], one_x.T)
+                    one_ch_one_x_T = np.dot(one_c[h], one_x.T)
 
-                c_k = label_num[labels[i]]
-                c_h = label_num[j]
-                m_k_one = one_c[labels[i], :]
-                m_h_one = one_c[j, :]
-                n_i_onehot = one_x
+                    a_hik = one_ck_one_ck_T/label_num[k]**2 - one_ch_one_ch_T/label_num[h]**2 - 2*one_ck_one_x_T/label_num[k] + 2*one_ch_one_x_T/label_num[h]
+                    A_hik = np.kron(I_d, a_hik)
 
-                # alpha,kappa,lamda
-                cov_in_e = np.dot(i_matrix_n, e_onehot)
-                C_k = np.dot(eta_sigma, m_k_one)/c_k
-                C_h = np.dot(eta_sigma, m_h_one)/c_h
-                e_sigma_eta = np.dot(n_i_onehot.T, sigma_eta)
-                #e_sigma_eta.reshape(e_sigma_eta.shape[0])
+                    # 区間導出
+                    SI_original.add_selection_event(A=A_hik)
+        else:
+            a_list = []
+            for j in range(cluster_num):
+                # 自分のクラスでなければ作成
+                if labels[i] != j:
+                    k = np.dot(one_x.T, X) - cluster[labels[i], :]
+                    h = np.dot(one_x.T, X) - cluster[j, :]
+                    lamda = np.dot(k, k.T) - np.dot(h, h.T)
 
-                alpha = np.dot(cov_in_e.T, cov_in_e)*((C_k - e_sigma_eta) **
-                                                    2 - (C_h - e_sigma_eta)**2)/SI_original.eta_sigma_eta**2
+                    c_k = label_num[labels[i]]
+                    c_h = label_num[j]
+                    m_k_one = one_c[labels[i], :]
+                    m_h_one = one_c[j, :]
+                    n_i_onehot = one_x
 
-                m_k = cluster[labels[i], :]
-                m_h = cluster[j, :]
-                x_i = np.dot(n_i_onehot.T, X)
-                kappa_a = (C_k - e_sigma_eta)*m_k - \
-                    (C_h - e_sigma_eta)*m_h - (C_k - C_h)*x_i
-                kappa_b = np.dot(kappa_a, cov_in_e)
+                    # alpha,kappa,lamda
+                    cov_in_e = np.dot(i_matrix_n, e_onehot)
+                    C_k = np.dot(eta_sigma, m_k_one)/c_k
+                    C_h = np.dot(eta_sigma, m_h_one)/c_h
+                    e_sigma_eta = np.dot(n_i_onehot.T, sigma_eta)
+                    #e_sigma_eta.reshape(e_sigma_eta.shape[0])
 
-                kappa = 2*tau_sign*kappa_b/SI_original.eta_sigma_eta
+                    alpha = np.dot(cov_in_e.T, cov_in_e)*((C_k - e_sigma_eta) **
+                                                        2 - (C_h - e_sigma_eta)**2)/SI_original.eta_sigma_eta**2
 
-                # 区間導出
-                SI_original.cut_interval(alpha[0,0], kappa[0,0], lamda[0,0], tau=True)
+                    m_k = cluster[labels[i], :]
+                    m_h = cluster[j, :]
+                    x_i = np.dot(n_i_onehot.T, X)
+                    kappa_a = (C_k - e_sigma_eta)*m_k - \
+                        (C_h - e_sigma_eta)*m_h - (C_k - C_h)*x_i
+                    kappa_b = np.dot(kappa_a, cov_in_e)
+
+                    kappa = 2*tau_sign*kappa_b/SI_original.eta_sigma_eta
+
+                    # 区間導出
+                    SI_original.cut_interval(alpha[0,0], kappa[0,0], lamda[0,0], tau=True)
 
 
 #Jaccard(d=2)
@@ -253,7 +276,9 @@ def jaccard_2dimension(labels, comp):
 
 # SI for PCI_gene
 class Homotopy_PCI_gene:
-    def __init__(self, obs_model, comp_cluster, max_iter, seed, var=1):
+    def __init__(self, obs_model, comp_cluster, max_iter, seed=0, var=1, is_fast=True):
+        self.is_fast = is_fast
+
         self.max_iter = max_iter
         self.seed = seed
         self.obs_model = obs_model
@@ -270,9 +295,13 @@ class Homotopy_PCI_gene:
         self.e_onehot = np.zeros((self.X.shape[1], 1))
         self.e_onehot[comp_cluster[2], 0] = 1
         self.delta = self.tau_sign*self.e_onehot
-        self.delta_eta = np.kron(self.delta, self.eta)
+        if self.is_fast:
+            self.delta_eta = np.kron(self.delta, self.eta)
+            self.param_si = SelectivePCINormSE(self.X, self.var, self.eta, delta=self.delta, init_lower=0)
+        else:
+            self.delta_eta = np.kron(self.delta, self.eta).reshape(len(self.vec_x))
+            self.param_si = SelectiveInferenceNormSE(self.vec_x, self.var, self.delta_eta, init_lower=0)
 
-        self.param_si = SelectivePCINormSE(self.X, self.var, self.eta, delta=self.delta, init_lower=0)
 
         self.intervals = []
         self.active_set = []
@@ -282,7 +311,10 @@ class Homotopy_PCI_gene:
         vec_x = X.T.flatten()
 
         # 共分散行列を生成
-        SI_original = SelectivePCINormSE(X, self.var, self.eta, self.delta, init_lower=0)
+        if self.is_fast:
+            SI_original = SelectivePCINormSE(X, self.var, self.eta, self.delta, init_lower=0)
+        else:
+            SI_original = SelectiveInferenceNormSE(vec_x, self.var, self.delta_eta, init_lower=0)
 
         #区間を計算############################
         # 初期クラスタをデータの中から選ぶ
@@ -324,8 +356,11 @@ class Homotopy_PCI_gene:
             labels_ = dist.argmin(axis=1)
 
             # 区間計算
-            make_interval_gene(X, self.n_clusters, labels_, labels_prev, label_num_list,
-                          cluster_centers_, self.eta, self.e_onehot, self.tau_sign, SI_original)
+            if self.is_fast:
+                make_interval_gene(X, self.n_clusters, labels_, labels_prev, label_num_list, SI_original,
+                          cluster=cluster_centers_, eta=self.eta, e_onehot=self.e_onehot, tau_sign=self.tau_sign)
+            else: 
+                make_interval_gene(X, self.n_clusters, labels_, labels_prev, label_num_list, SI_original)
             count += 1
 
         return SI_original.get_intervals(), labels_

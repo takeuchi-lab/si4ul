@@ -22,9 +22,9 @@ def pci_cluster(obs_model, comparison_clusters, sigma, max_iter, random_seed, z_
     return pci_cluster.param_si.stat, hpci_p_value, naive_p_value
 
 
-def pci_gene(obs_model, comparison_clusters, test_gene, sigma, max_iter, random_seed, z_max):
+def pci_gene(obs_model, comparison_clusters, test_gene, sigma, max_iter, random_seed, z_max, is_fast):
     comp_cluster = [comparison_clusters[0], comparison_clusters[1], test_gene]
-    pci_gene = si.Homotopy_PCI_gene(obs_model, comp_cluster, max_iter=max_iter, seed=random_seed, var=sigma)
+    pci_gene = si.Homotopy_PCI_gene(obs_model, comp_cluster, max_iter=max_iter, seed=random_seed, var=sigma, is_fast=is_fast)
     pci_gene.fit(z_max)
 
     pci_gene.test(tail='right')

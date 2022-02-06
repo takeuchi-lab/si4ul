@@ -46,7 +46,7 @@ def pci_cluster(obs_model, comparison_clusters, sigma=1.0, max_iter=1000, random
     return exp.pci_cluster(obs_model, comparison_clusters, sigma, max_iter, random_seed, z_max)
 
 
-def pci_gene(obs_model, comparison_clusters, test_gene, sigma=1.0, max_iter=1000, random_seed=0, z_max=20):
+def pci_gene(obs_model, comparison_clusters, test_gene, sigma=1.0, max_iter=1000, random_seed=0, z_max=20, is_fast=True):
     """
     post clustering inference for test between clusters about a feature.
     
@@ -69,7 +69,7 @@ def pci_gene(obs_model, comparison_clusters, test_gene, sigma=1.0, max_iter=1000
 
     if len(comparison_clusters) != 2:
         raise ValueError("length of comparison_clusters must be 2")
-    return exp.pci_gene(obs_model, comparison_clusters, test_gene, sigma, max_iter, random_seed, z_max)
+    return exp.pci_gene(obs_model, comparison_clusters, test_gene, sigma, max_iter, random_seed, z_max, is_fast)
 
 
 def all_clusters_combination_test(obs_model, test_gene=None, sigma=1.0):
