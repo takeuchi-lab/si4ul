@@ -4,7 +4,7 @@ from si4ul.experiments import multiseq_cp_si as exp
 def multiseq_cp_dc_si(X, K, L, Xi=1, Sigma=1, test="hom", width=0, phi=0.5):
     """
     computing valid p-values for changepoint with Double-CUSUM
-    by over-conditioning Selective Inference.
+    by Selective Inference.
 
     Args:
         X (ndarray of shape (component, location)): multi-dimensional sequence.
@@ -12,7 +12,7 @@ def multiseq_cp_dc_si(X, K, L, Xi=1, Sigma=1, test="hom", width=0, phi=0.5):
         L (int): minimum segment length.
         Xi (float or ndarray, optional): component's variance. Defaults to 1.
         Sigma (float or ndarray, optional): location's variance. Defaults to 1.
-        test (str, optional): Set 'hom' for homotopy search, 'oc' for over-conditioning
+        test (str, optional): Set 'hom' for homotopy search, 'oc' for over-conditioning,
             'naive' for naive test. Defaults to 'homotopy'.
         width (int, optional): same cp width. Defaults to 0
         phi (float, optional): Double-CUSUM's parameter. Defaults to 0.5
@@ -33,7 +33,7 @@ def multiseq_cp_dc_si(X, K, L, Xi=1, Sigma=1, test="hom", width=0, phi=0.5):
 def multiseq_cp_scan_si(X, K, L, Xi=1, Sigma=1, test="hom", width=0):
     """
     computing valid p-values for changepoint with scan statistic
-    by over-conditioning Selective Inference.
+    by Selective Inference.
 
     Args:
         X (ndarray of shape (component, location)): multi-dimensional sequence.
@@ -41,7 +41,7 @@ def multiseq_cp_scan_si(X, K, L, Xi=1, Sigma=1, test="hom", width=0):
         L (int): minimum segment length.
         Xi (float or ndarray, optional): component's variance. Defaults to 1.
         Sigma (float or ndarray, optional): location's variance. Defaults to 1.
-        test (str, optional): Set 'hom' for homotopy search, 'oc' for over-conditioning
+        test (str, optional): Set 'hom' for homotopy search, 'oc' for over-conditioning,
             'naive' for naive test. Defaults to 'homotopy'.
         width (int, optional): same cp width. Defaults to 0
 

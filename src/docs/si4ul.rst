@@ -11,6 +11,14 @@ si4ul.changepoint\_si module
    :undoc-members:
    :show-inheritance:
 
+si4ul.multiseq\_cp\_si module
+============================
+
+.. automodule:: si4ul.multiseq_cp_si
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 si4ul.kmeans\_si module
 =======================
 
