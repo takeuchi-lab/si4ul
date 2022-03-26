@@ -11,7 +11,7 @@ def kmeans(X, k):
 
 def pci_cluster(obs_model, comparison_clusters, sigma, max_iter, random_seed, z_max):
     comp_cluster = [comparison_clusters[0], comparison_clusters[1]]
-    pci_cluster = si.Homotopy_PCI_cluster(obs_model, comp_cluster, max_iter=max_iter, seed=random_seed, var=sigma)
+    pci_cluster = si.Homotopy_PCI_cluster(obs_model, comp_cluster, max_iter, random_seed)
     pci_cluster.fit(z_max)
 
     pci_cluster.test(tail='right')
@@ -24,7 +24,7 @@ def pci_cluster(obs_model, comparison_clusters, sigma, max_iter, random_seed, z_
 
 def pci_gene(obs_model, comparison_clusters, test_gene, sigma, max_iter, random_seed, z_max, is_fast):
     comp_cluster = [comparison_clusters[0], comparison_clusters[1], test_gene]
-    pci_gene = si.Homotopy_PCI_gene(obs_model, comp_cluster, max_iter=max_iter, seed=random_seed, var=sigma, is_fast=is_fast)
+    pci_gene = si.Homotopy_PCI_gene(obs_model, comp_cluster, max_iter, random_seed)
     pci_gene.fit(z_max)
 
     pci_gene.test(tail='right')
@@ -51,7 +51,7 @@ def all_clusters_combination_test(obs_model, test_gene, sigma):
             if test_gene == None:
                 stat, hpci_p_value, naive_p_value = pci_cluster(obs_model, comparison_clusters, sigma, max_iter=1000, random_seed=0, z_max=20)
             else:
-                stat, hpci_p_value, naive_p_value = pci_gene(obs_model, comparison_clusters, test_gene, sigma, max_iter=1000, random_seed=0, z_max=20)
+                stat, hpci_p_value, naive_p_value = pci_gene(obs_model, comparison_clusters, test_gene, sigma, max_iter=1000, random_seed=0, z_max=20, is_fast=True)
             stat_matrix[c_0, c_1] = stat
             hpci_p_matrix[c_0, c_1] = hpci_p_value
             naive_p_matrix[c_0, c_1] = naive_p_value
