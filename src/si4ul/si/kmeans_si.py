@@ -1,41 +1,16 @@
 import numpy as np
 
-from si4ul.si.sicore.sicore import SelectivePCINormSE, NaivePCIChiSquared, NaivePCINorm, SelectivePCIChiSquaredSE
+from .sicore.sicore import SelectivePCINormSE, NaivePCIChiSquared, NaivePCINorm, SelectivePCIChiSquaredSE
+from .sicore.sicore.inference import norm as sicore
+from .sicore.sicore.inference import chi_squared as chi_si
 
 
 # KMeans algorithm
 class KMeans:
-    """
-    this class returns the results of k-means clustering.
-    we can get from kmeans_si.kmeans().
-    other kmeans_si APIs need this object to input.
-
-    Attributes:
-        cluster_centers_ (array-like of shape(n_clusters, d)): cluster center matrix.
-        count (int): count of iteration in k-means algorithm.
-        labels_ (array-like of shape(n)): label vector that each data join.
-        label_num_list (array-like of shape(n_clusters)): list of the number of data contained in the cluster.
-        max_iter (int): upper limit count of iteration in k-means algorithm.
-        n_clusters (int): number of cluster.
-        random_seed (int): seed of random for determine initial cluster.
-        X (array-like of shape(n, d)): data matrix.
-
-    Examples:
-        >>> kMeans.X
-        array([[ 1.32473015,  0.12584954], [ 0.17229311,  2.01200624], [ 1.47662313, -1.28557418], [ 0.1302503 , -0.43927367], [-1.41546232,  0.13654847], [-1.05260842,  1.20597647], [-0.14717876, -0.15950429], [-0.61262757,  0.05772617], [ 0.92854842, -0.49440228], [-0.80456805, -1.15935248]])
-        >>> kMeans.n_clusters
-        3
-        >>> kMeans.cluster_centers_
-        array([[ 1.47662313, -1.28557418], [ 0.55908753, -0.24183267], [-0.74259465,  0.45058097]])
-        >>> kMeans.labels_
-        array([1, 2, 0, 1, 2, 2, 1, 2, 1, 2])
-        >>> kMeans.label_num_list
-        [1, 4, 5]
-        >>> kMeans.count
-        2
-    """
     def __init__(self, X, n_clusters, max_iter = 1000, random_seed = 0):
-        self.X = self.standardization(X)
+        #ここで正規化する場合はHomotopy_PCI_gene内のkmeansにも適用させる必要あり
+        # self.X = self.standardization(X)
+        self.X = X
         self.n_clusters = n_clusters
         self.max_iter = max_iter
         self.random_state = np.random.RandomState(random_seed)
@@ -175,16 +150,11 @@ def make_interval_cluster(X, cluster_num, labels, labels_prev, label_num, cluste
 
 
 # make interval gene
-def make_interval_gene(X, cluster_num, labels, labels_prev, label_num, cluster, eta, e_onehot, tau_sign, SI_original):
-    vec_x = X.T.flatten()
-    i_matrix_m = np.eye(X.shape[0])
-    i_matrix_n = np.eye(X.shape[1])
-
-    eta_sigma = np.dot(eta.T, i_matrix_m)
-    sigma_eta = np.dot(i_matrix_m, eta)
+def make_interval_gene(X, cluster_num, labels, labels_prev, label_num, SI_original):
+    I_d = np.eye(X.shape[1])
 
     # データがどのクラスに属するかを表現する行列
-    one_c = np.zeros((cluster_num, X.shape[0]))
+    one_c = np.zeros((cluster_num, X.shape[0], 1))
     for i in range(one_c.shape[1]):
         if labels_prev[i] != -1:
             one_c[labels_prev[i], i] = 1
@@ -193,42 +163,26 @@ def make_interval_gene(X, cluster_num, labels, labels_prev, label_num, cluster, 
     for i in range(X.shape[0]):
         one_x = np.zeros((X.shape[0], 1))
         one_x[i, 0] = 1
+        k = labels[i]
 
-        a_list = []
-        for j in range(cluster_num):
+        # I_d_one_ck = np.kron(I_d, one_c[k])/label_num[k]
+        # m_k = np.dot(I_d_one_ck.T, X.T.flatten())
+        # print(m_k)
+
+        for h in range(cluster_num):
             # 自分のクラスでなければ作成
-            if labels[i] != j:
-                k = np.dot(one_x.T, X) - cluster[labels[i], :]
-                h = np.dot(one_x.T, X) - cluster[j, :]
-                lamda = np.dot(k, k.T) - np.dot(h, h.T)
+            if k != h:
+                one_ck_one_ck_T = np.dot(one_c[k], one_c[k].T)
+                one_ch_one_ch_T = np.dot(one_c[h], one_c[h].T)
+                one_ck_one_x_T = np.dot(one_c[k], one_x.T)
+                one_ch_one_x_T = np.dot(one_c[h], one_x.T)
 
-                c_k = label_num[labels[i]]
-                c_h = label_num[j]
-                m_k_one = one_c[labels[i], :]
-                m_h_one = one_c[j, :]
-                n_i_onehot = one_x
+                a_hik = one_ck_one_ck_T/label_num[k]**2 - one_ch_one_ch_T/label_num[h]**2 - 2*one_ck_one_x_T/label_num[k] + 2*one_ch_one_x_T/label_num[h]
 
-                # alpha,kappa,lamda
-                cov_in_e = np.dot(i_matrix_n, e_onehot)
-                C_k = np.dot(eta_sigma, m_k_one)/c_k
-                C_h = np.dot(eta_sigma, m_h_one)/c_h
-                e_sigma_eta = np.dot(n_i_onehot.T, sigma_eta)
-                #e_sigma_eta.reshape(e_sigma_eta.shape[0])
-
-                alpha = np.dot(cov_in_e.T, cov_in_e)*((C_k - e_sigma_eta) **
-                                                    2 - (C_h - e_sigma_eta)**2)/SI_original.eta_sigma_eta**2
-
-                m_k = cluster[labels[i], :]
-                m_h = cluster[j, :]
-                x_i = np.dot(n_i_onehot.T, X)
-                kappa_a = (C_k - e_sigma_eta)*m_k - \
-                    (C_h - e_sigma_eta)*m_h - (C_k - C_h)*x_i
-                kappa_b = np.dot(kappa_a, cov_in_e)
-
-                kappa = 2*tau_sign*kappa_b/SI_original.eta_sigma_eta
+                A_hik = np.kron(I_d, a_hik)
 
                 # 区間導出
-                SI_original.cut_interval(alpha[0,0], kappa[0,0], lamda[0,0], tau=True)
+                SI_original.add_selection_event(A=A_hik)
 
 
 #Jaccard(d=2)
@@ -253,7 +207,7 @@ def jaccard_2dimension(labels, comp):
 
 # SI for PCI_gene
 class Homotopy_PCI_gene:
-    def __init__(self, obs_model, comp_cluster, max_iter, seed, var=1):
+    def __init__(self, obs_model, comp_cluster, max_iter, seed=0, Var=1):
         self.max_iter = max_iter
         self.seed = seed
         self.obs_model = obs_model
@@ -263,26 +217,26 @@ class Homotopy_PCI_gene:
         self.eta = make_eta(self.X, obs_model.labels_, obs_model.label_num_list, comp_cluster)
         self.tau_sign = sign(self.X, self.eta, comp_cluster)
         self.comp_cluster = comp_cluster
-        self.var = var
+        self.Var = 1
         self.n_clusters = obs_model.n_clusters
 
-        # δとηを計算
+        #δとηを計算
         self.e_onehot = np.zeros((self.X.shape[1], 1))
         self.e_onehot[comp_cluster[2], 0] = 1
         self.delta = self.tau_sign*self.e_onehot
-        self.delta_eta = np.kron(self.delta, self.eta)
+        self.delta_eta = np.kron(self.delta, self.eta).reshape(len(self.vec_x))
 
-        self.param_si = SelectivePCINormSE(self.X, self.var, self.eta, delta=self.delta, init_lower=0)
+        self.param_si = sicore.SelectiveInferenceNormSE(self.vec_x, self.Var, self.delta_eta, init_lower=0)
 
         self.intervals = []
         self.active_set = []
         self.p_value = 0
 
     def serch_interval(self, X):
-        vec_x = X.T.flatten()
 
+        vec_x = X.T.flatten()
         # 共分散行列を生成
-        SI_original = SelectivePCINormSE(X, self.var, self.eta, self.delta, init_lower=0)
+        SI_original = sicore.SelectiveInferenceNormSE(vec_x, self.Var, self.delta_eta, init_lower=0)
 
         #区間を計算############################
         # 初期クラスタをデータの中から選ぶ
@@ -324,8 +278,7 @@ class Homotopy_PCI_gene:
             labels_ = dist.argmin(axis=1)
 
             # 区間計算
-            make_interval_gene(X, self.n_clusters, labels_, labels_prev, label_num_list,
-                          cluster_centers_, self.eta, self.e_onehot, self.tau_sign, SI_original)
+            make_interval_gene(X, self.n_clusters, labels_, labels_prev, label_num_list, SI_original)
             count += 1
 
         return SI_original.get_intervals(), labels_
@@ -367,7 +320,7 @@ class Homotopy_PCI_gene:
         self.intervals = s_interval
 
     def naive_test(self, popmean=0):
-        naive = NaivePCINorm(self.X, self.var, self.eta, self.delta)
+        naive = NaivePCINorm(self.X, self.Var, self.eta, self.delta)
         self.p_value = naive.test(tail='right', popmean=popmean)
 
 
@@ -383,7 +336,7 @@ class Homotopy_PCI_gene:
 
 
 class Homotopy_PCI_cluster:
-    def __init__(self, obs_model, comp_cluster, max_iter = 1000, seed = 0, var = 1):
+    def __init__(self, obs_model, comp_cluster, max_iter = 1000, seed = 0, Var = 1):
         self.X = obs_model.X
         self.vec_x = self.X.T.flatten()
         self.comp_cluster = comp_cluster
@@ -392,11 +345,16 @@ class Homotopy_PCI_cluster:
         self.eta = make_eta(self.X, obs_model.labels_, obs_model.label_num_list, comp_cluster)
         self.max_iter = max_iter
         self.seed = seed
-        self.var = var
+        self.Var = Var
         self.gamma = np.kron(np.eye(self.X.shape[1]), self.eta)
         
-        self.param_si = SelectivePCIChiSquaredSE(self.X, self.var, self.gamma[:,0], 0, init_lower = 0)
+        self.param_si = SelectivePCIChiSquaredSE(self.X, self.Var, self.gamma[:,0], 0, init_lower = 0)
         self.sigma_hat = self.param_si.make_sigma_hat(self.X, self.eta)
+
+        # self.param_si = chi_si.SelectiveInferenceChiSquaredSE(
+        #     self.vec_x, 1, self.eta, degree=self.X.shape[1], init_lower=0
+        # )
+        # self.sigma_hat = self.param_si.sigma_hat
 
         self.intervals = []
         self.active_set = []
@@ -405,10 +363,12 @@ class Homotopy_PCI_cluster:
     def serch_interval(self, X):
         vec_x = X.T.flatten()
 
-        param_si_z = SelectivePCIChiSquaredSE(X, self.var, self.gamma[:,0], 0, init_lower = 0)
+        param_si_z = SelectivePCIChiSquaredSE(X, self.Var, self.gamma[:,0], 0, init_lower = 0)
         #sigma_hat
         sigma_hat = param_si_z.make_sigma_hat(X, self.eta)
-        
+        # param_si_z = chi_si.SelectiveInferenceChiSquaredSE(
+        #     vec_x, 1, self.eta, degree=self.X.shape[1], init_lower=0
+        # )     
         #m_a - m_b
         m_a_m_b = np.dot(self.gamma.T, vec_x)
         
@@ -500,8 +460,10 @@ class Homotopy_PCI_cluster:
         self.intervals = s_interval
 
     def naive_test(self):
-        naive = NaivePCIChiSquared(self.X, 1, self.eta, 0)
-        self.p_value = naive.test(self.X, tail='right')
+        # naive = NaivePCIChiSquared(self.X, 1, self.eta, 0)
+        # self.p_value = naive.test(self.X, tail='right')
+        naive = chi_si.NaiveInferenceChiSquared(self.vec_x, 1, self.eta, degree=self.X.shape[1])
+        self.p_value = naive.test(tail='right')
 
     def test(self, tail='double', dps='auto'):
         active_intervals = []
